@@ -1,0 +1,102 @@
+type FeeAmounts @entity {
+    id: ID!
+    fee: Int!
+    tickSpacing: Int!
+}
+
+type FeeGrowthGlobals @entity {
+    id: ID!
+    revision: Int!
+    poolId: String!
+    blockNumber: Int!
+    timestamp: Int!
+    feeGrowthGlobal0X128: BigInt!
+    feeGrowthGlobal1X128: BigInt!
+}
+
+type Observations @entity {
+    id: ID!
+    index: Int!
+    poolId: String!
+    blockTimestamp: BigInt!
+    tickCumulative: BigInt!
+    secondsPerLiquidityCumulativeX128: BigInt!
+    initialized: Boolean!
+}
+
+type Pools @entity {
+    id: ID!
+    protocol_fee_token0: BigInt!
+    protocol_fee_token1: BigInt!
+    address: String!
+    factory: String!
+    owner: String!
+    token0: String!
+    token1: String!
+    fee: Int!
+    tickSpacing: Int!
+    maxLiquidityPerTick: BigInt!
+    liquidity: BigInt!
+}
+
+type PositionInfos @entity {
+    id: ID!
+    owner: String!
+    poolId: String!
+    tickLower: Int!
+    tickUpper: Int!
+    liquidity: BigInt!
+    feeGrowthInside0LastX128: BigInt! 
+    feeGrowthInside1LastX128: BigInt! 
+    tokensOwed0: BigInt!
+    tokensOwed1: BigInt!
+}
+
+type Positions @entity {
+    id: ID!
+    nonce: BigInt!
+    operator: String!
+    owner: String!
+    tokenId: BigInt!
+    tickLower: Int!
+    tickUpper: Int!
+    poolId: String!
+    liquidity: BigInt!
+    feeGrowthInside0LastX128: BigInt! 
+    feeGrowthInside1LastX128: BigInt! 
+    tokensOwed0: BigInt!
+    tokensOwed1: BigInt!
+    burned: Boolean!
+}
+
+type Slots @entity {
+    id: ID!
+    sqrtPriceX96: BigInt!
+    tick: Int!
+    observationIndex: Int!
+    observationCardinality: Int!
+    observationCardinalityNext: Int!
+    feeProtocol: Int!
+    unlocked: Boolean!
+}
+
+type TickBitmaps @entity {
+    id: ID!
+    poolId: String!
+    tick: Int!
+    tickSpacing: Int!
+    value: BigInt!
+}
+
+type TickInfos @entity {
+    id: ID!
+    poolId: String!
+    liquidityGross: BigInt!
+    liquidityNet: BigInt!
+    feeGrowthOutside0X128: BigInt!
+    feeGrowthOutside1X128: BigInt!
+    tickCumulativeOutside: BigInt!
+    secondsPerLiquidityOutsideX128: BigInt!
+    secondsOutside: BigInt!
+    initialized: Boolean!
+}
