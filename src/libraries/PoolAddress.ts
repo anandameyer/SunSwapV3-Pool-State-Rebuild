@@ -24,7 +24,10 @@ export class PoolAddress {
         const addrA = ethers.getAddress(tokenA);
         const addrB = ethers.getAddress(tokenB);
 
-        return addrA.toLowerCase() < addrB.toLowerCase()
+        const numA = BigInt(addrA.toLowerCase());
+        const numB = BigInt(addrB.toLowerCase());
+
+        return numA < numB
             ? { token0: addrA, token1: addrB, fee: fee }
             : { token0: addrB, token1: addrA, fee: fee };
     }

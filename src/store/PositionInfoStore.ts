@@ -91,7 +91,7 @@ export class PositionInfoStore {
         self.tokensOwed0 = self.tokensOwed0 + (tokensOwed0 > 0n ? tokensOwed0 : 0n);
         self.tokensOwed1 = self.tokensOwed1 + (tokensOwed1 > 0n ? tokensOwed1 : 0n);
 
-        console.dir(["position info update", self], { depth: null });
+        // console.dir(["position info update", self], { depth: null });
         await this.store.upsert(self);
 
         return self;

@@ -13,7 +13,7 @@ export class SlotStore {
     }
 
     async save(slot: Slot): Promise<void> {
-        console.dir(["slot save", slot], { depth: null });
+        // console.dir(["slot save", slot], { depth: null });
         await this.store.upsert(slot);
     }
 }

@@ -30,7 +30,7 @@ export class PositionStore {
     }
 
     async save(self: Position) {
-        console.dir(["position save", self], { depth: null });
+        // console.dir(["position save", self], { depth: null });
         await this.store.upsert(self);
     }
 }

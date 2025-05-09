@@ -7,9 +7,9 @@ import { events as FactoryEvent, functions as FactoryFunction } from './abi/gene
 import { functions as PositionManagerFunction } from './abi/generated/V3NFTPositionManager';
 import { functions as PoolFunction } from './abi/generated/V3Pool';
 import { functions as V3RouterFunction } from './abi/generated/V3SwapRouter';
-import { PositionManagerAddress, V3PositionManager } from './contracts/V3PositionManager';
 import { SmartExchangeRouterAddress, SmartExchangeRouter as SmartRouter } from './contracts/SmartExchangeRouter';
 import { FactoryAddress } from './contracts/V3Factory';
+import { PositionManagerAddress, V3PositionManager } from './contracts/V3PositionManager';
 import { RouterAddress, V3Router } from './contracts/V3Router';
 import { FeeAmountStore } from './store/FeeAmountStore';
 import { PoolStore } from './store/PoolStore';
@@ -17,8 +17,8 @@ import { PositionStore } from './store/PositionStore';
 
 
 const USDT_ADDRESS = '0xa614f803b6fd780986a42c78ec9c7f77e6ded13c'.toLowerCase(); //TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t
-const SUN_ADDRESS = '0xb4A428ab7092c2f1395f376cE297033B3bB446C1'.toLowerCase(); //TSSMHYeV2uE9qYH95DqyoCuNCzEL1NvU3S
-// const WTRX_ADDRESS = '0x891cdb91d149f23b1a45d9c5ca78a88d0cb44c18'.toLowerCase(); //TNUC9Qb1rRpS5CbWLmNMxXBjyFoydXjWFR
+// const SUN_ADDRESS = '0xb4A428ab7092c2f1395f376cE297033B3bB446C1'.toLowerCase(); //TSSMHYeV2uE9qYH95DqyoCuNCzEL1NvU3S
+const WTRX_ADDRESS = '0x891cdb91d149f23b1a45d9c5ca78a88d0cb44c18'.toLowerCase(); //TNUC9Qb1rRpS5CbWLmNMxXBjyFoydXjWFR
 // const QSI_ADDRESS = '0xa2e23968dcd2de9abac2aa52a647b7344ab13892'.toLowerCase(); //TQpTUUMU4JeBNjULXFBdose1Cew958NeUB
 
 
@@ -52,7 +52,7 @@ const processor = new TronBatchProcessor()
     // .setBlockRange({ from: 57995081 })
     // .setBlockRange({ from: 57990000 })
     // .setBlockRange({ from: 52368185 })
-    .setBlockRange({ from: 53257501 })
+    .setBlockRange({ from: 52419300 })
 
     // .includeAllBlocks()
     // .includeAllBlocks({ from: 64500000 })
@@ -236,6 +236,7 @@ function checkMethod(data: string[]): any[] {
             decodes.push(i.substring(2, 10));
         }
     }
+    // console.log(decodes);
 
     return decodes;
 }
@@ -252,8 +253,8 @@ processor.run(new TypeormDatabase(), async (ctx) => {
         }
     } catch (__) { }
 
-    const pairsAB = USDT_ADDRESS + SUN_ADDRESS;
-    const pairsBA = SUN_ADDRESS + USDT_ADDRESS;
+    const pairsAB = USDT_ADDRESS + WTRX_ADDRESS;
+    const pairsBA = WTRX_ADDRESS + USDT_ADDRESS;
 
     for (let block of ctx.blocks) {
         for (let trx of block.transactions) {
@@ -263,7 +264,7 @@ processor.run(new TypeormDatabase(), async (ctx) => {
                 const sighash = (trx.parameter.value.data as string).substring(0, 8);
                 const paramData = '0x' + trx.parameter.value.data;
                 const caller = '0x' + trx.parameter.value.owner_address.toLowerCase();
-                const router = new V3Router(ctx.store, USDT_ADDRESS, SUN_ADDRESS, caller, block.header.timestamp, block.header.height);
+                const router = new V3Router(ctx.store, USDT_ADDRESS, WTRX_ADDRESS, caller, block.header.timestamp, block.header.height);
                 const positionManager = new V3PositionManager(ctx.store, caller, trx.block.timestamp, trx.block.height);
                 const smartExchangeRouter = new SmartRouter(ctx.store, caller, trx.block.timestamp, trx.block.height);
                 const poolStore = new PoolStore(ctx.store);
@@ -345,7 +346,7 @@ processor.run(new TypeormDatabase(), async (ctx) => {
                                     console.log(`mint ${trx.hash}`);
                                     // console.dir(["mint", caller, trx.hash, params], { depth: null });
                                     const { amount0, amount1, liquidity, id } = await positionManager.mint(params.params);
-                                    if (amount0 != result.amount0 || amount1 != result.amount1) console.dir(["mint: result mismatched", { hash: trx.hash, amount0, amount1, liquidity, result, params }], { depth: null });
+                                    // if (amount0 != result.amount0 || amount1 != result.amount1) console.dir(["mint: result mismatched", { hash: trx.hash, amount0, amount1, liquidity, result, params }], { depth: null });
                                     const position = await positionStore.getById(id);
                                     if (position) {
                                         position.tokenId = result.tokenId;
@@ -393,8 +394,7 @@ processor.run(new TypeormDatabase(), async (ctx) => {
                                                 console.log(`mint ${trx.hash}`);
                                                 // console.dir({ param: "mint", caller, hash: trx.hash, timestamp: trx.block.timestamp, heigth: trx.block.height, params }, { depth: null });
                                                 const { amount0, amount1, liquidity, id } = await positionManager.mint(params.params);
-                                                if (amount0 != result.amount0 || amount1 != result.amount1) console.dir(["multicall mint: result mismatched", { hash: trx.hash, amount0, amount1, liquidity, result, params }], { depth: null });
-                                                console.log(amount0 / liquidity, amount1 / liquidity);
+                                                // if (amount0 != result.amount0 || amount1 != result.amount1) console.dir(["multicall mint: result mismatched", { hash: trx.hash, amount0, amount1, liquidity, result, params }], { depth: null });
                                                 const position = await positionStore.getById(id);
                                                 if (position) {
                                                     position.tokenId = result.tokenId;

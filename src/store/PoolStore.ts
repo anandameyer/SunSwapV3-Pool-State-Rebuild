@@ -19,7 +19,7 @@ export class PoolStore {
     }
 
     async save(config: Pool): Promise<void> {
-        console.dir(["pool save", config], { depth: null });
+        // console.dir(["pool save", config], { depth: null });
         await this.store.upsert(config);
     }
 

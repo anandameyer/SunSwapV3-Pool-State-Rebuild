@@ -81,9 +81,9 @@ export class V3Router {
     // }
 
     public async uniswapV3SwapCallback(amount0Delta: bigint, amount1Delta: bigint, _data: string): Promise<void> {
-        if (amount0Delta > 0 || amount1Delta > 0) {
-            throw new Error('Swaps entirely within 0-liquidity regions are not supported');
-        }
+        // if (amount0Delta > 0 || amount1Delta > 0) {
+        //     throw new Error('Swaps entirely within 0-liquidity regions are not supported');
+        // }
 
         const data: SwapCallbackData = JSON.parse(_data);
         const { tokenA, tokenB, fee } = Path.decodeFirstPool(data.path);
@@ -116,7 +116,7 @@ export class V3Router {
     }
 
     private allowedToken(token0: string, token1: string): boolean {
-        if (this.token0 !== '' && this.token1 !== '') return true;
+        if (this.token0 == '' && this.token1 == '') return true;
         const tokens = (token0 + token1).toLowerCase()
         return tokens == this.pairAB || tokens == this.pairBA;
     }

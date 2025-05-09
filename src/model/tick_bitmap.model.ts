@@ -6,12 +6,12 @@ export class TickBitmap {
         Object.assign(this, props)
     }
 
+    @PrimaryColumn()
+    id!: string
+    
     @StringColumn()
     @Index()
     poolId!: string
-
-    @PrimaryColumn()
-    id!: string
 
     @IntColumn()
     @Index()
