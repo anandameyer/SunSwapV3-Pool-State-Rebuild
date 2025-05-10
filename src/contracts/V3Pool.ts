@@ -641,16 +641,14 @@ export class V3Pool {
                 slot0Start.observationCardinalityNext
             );
 
-            slot0 = {
-                id: '0',
-                sqrtPriceX96: state.sqrtPriceX96,
-                tick: state.tick,
-                observationIndex,
-                observationCardinality,
-                observationCardinalityNext: slot0Start.observationCardinalityNext,
-                feeProtocol: slot0Start.feeProtocol,
-                unlocked: true
-            };
+            slot0.sqrtPriceX96 = state.sqrtPriceX96;
+            slot0.tick = state.tick;
+            slot0.observationIndex = observationIndex;
+            slot0.observationCardinality = observationCardinality;
+            slot0.observationCardinalityNext = slot0Start.observationCardinalityNext;
+            slot0.feeProtocol = slot0Start.feeProtocol;
+            slot0.unlocked = true;
+
         } else {
             slot0.sqrtPriceX96 = state.sqrtPriceX96;
         }
