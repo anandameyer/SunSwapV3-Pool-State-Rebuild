@@ -20,9 +20,9 @@ Here, we describe an attempt at reconstructing the state of the SunSwap V3 pool 
 
    ![State deps](./contract-state-deps.png)
 
-3. Solidity code for all SunSwap V3 contracts was obtained from **add source repo** and translated into TypeScript (see `src/contracts`). An LLM (**add LLM name**) was used in the interest of time. Libraries that the contracts relied upon were also translated (see `src/libraries`).
+3. Solidity code for all SunSwap V3 contracts was obtained from [SunswapV3Contracts](https://github.com/sun-protocol/SunswapV3Contracts) and [SmartExchangeRouter](https://github.com/sun-protocol/SmartExchangeRouter/tree/main) then translated into TypeScript (see `src/contracts`). An LLM DeepSeek was used in the interest of time. Libraries that the contracts relied upon were also translated (see `src/libraries`).
 4. After replaying the pool state initialization, @anandameyer found that liquidity and amount minted did not match.
-5. The Solidity contracts were deployed to a Remix VM as a test, but they didn't work as a whole **please how exactly they failed**.
+5. The Solidity contracts were deployed to a Remix VM as a test, but they didn't work as a whole because after pool creation, the stored address of created pool doesn't match the real address and `mint` operation on `NonFungiblePositionManager` resulted on error after pool creation.
 6. Replaying `Swap`-inducing transactions against the virtual TypeScript contracts, @anandameyer managed to get some of the relevant state to change:
 
    ![Historical FeeGrowthGlobals](./state-updates.png)
